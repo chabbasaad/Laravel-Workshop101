@@ -20,9 +20,43 @@ class PostController extends Controller
         DB::enableQueryLog();
 
         // Retrieve all posts and users (though users are not used in the view)
-        $posts = Post::all();
-        $users = User::all();
-        $query = DB::getQueryLog();
+       //
+
+
+
+       DB::enableQueryLog(); // Start logging queries
+
+       // Fetch posts without eager loading
+       $posts = Post::with('comments')->get();
+
+    //    foreach ($posts as $post) {
+    //        echo $post->comments->count() . ' comments<br>';
+    //    }
+
+    //    // Log and reset after non-eager loading
+    //    $log = DB::getQueryLog();
+    //    echo 'Queries executed without eager loading: ' . count($log) . "<br>";
+    //    DB::flushQueryLog(); // Resetting query log
+
+       // Fetch posts with eager loading
+       //$posts = Post::with('comments')->get()->setHidden(['content']);
+
+       //
+
+    //    $posts = DB::table('posts')
+    //        ->join('comments', 'posts.id', '=', 'comments.post_id')
+    //        ->select('posts.*', 'comments.*')
+    //        ->get();
+
+    //    foreach ($posts as $post) {
+    //        echo $post->comments->count() . ' comments<br>';
+    //    }
+
+    //    // Review query log with eager loading
+    //    $log = DB::getQueryLog();
+    //    echo 'Queries executed with eager loading: ' . count($log) . "<br>";
+
+
 
         return view('posts.index', [
             'posts' => $posts
@@ -34,6 +68,7 @@ class PostController extends Controller
      */
     public function create()
     {
+
         return view('posts.create');
     }
 

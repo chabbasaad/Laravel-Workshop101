@@ -13,24 +13,37 @@
     </div>
     <div class="row">
         <div class="col-12">
-            @if(count($posts) > 0)
+
+            @if(json_encode($posts) > 0)
+
             <table class="table table-striped table-bordered">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Title</th>
                         <th scope="col">Content</th>
                         <th scope="col">Image</th>
+                        <th scope="col">Comments</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($posts as $post)
                     <tr>
+
                         <td><a href="{{ route('posts.show', ['post' => $post->id]) }}">{{ $post->title }}</a></td>
                         <td>{{ $post->content }}</td>
                         <td>
                             @if($post->image_post)
                             <img src="{{ Storage::url($post->image_post) }}" alt="Post Image" class="img-fluid" style="max-width: 100px;">
+                            @endif
+                        </td>
+                        <td>
+                            @if($post->comments->count() > 0)
+                            <ul>
+                                @foreach($post->comments as $comment)
+                                <li>{{ $comment->comment }} - {{ $comment->created_at}}</li>
+                                @endforeach
+                            </ul>
                             @endif
                         </td>
                         <td>

@@ -44,4 +44,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the posts for the user.
+     */
+    public function phone()
+    {
+        return $this->hasOne(Phone::class, 'user_id', 'id');
+    }
 }
