@@ -13,8 +13,8 @@ use App\Http\Controllers\PostController;
 // });
 
 
-Route::view('/','home');
-Route::view('/about','about');
+ Route::view('/','home');
+// Route::view('/about','about');
 
 
 

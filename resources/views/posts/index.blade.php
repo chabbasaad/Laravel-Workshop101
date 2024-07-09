@@ -20,6 +20,7 @@
                         <th scope="col">Title</th>
                         <th scope="col">Content</th>
                         <th scope="col">Image</th>
+                        <th scope="col">Comments</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -33,6 +34,7 @@
                             <img src="{{ Storage::url($post->image_post) }}" alt="Post Image" class="img-fluid" style="max-width: 100px;">
                             @endif
                         </td>
+                        <td>{{ count($post->comments) }}</td>
                         <td>
                             <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-primary btn-sm">Edit</a>
                             <form method="POST" action="{{ route('posts.destroy', ['post' => $post->id]) }}" style="display:inline-block;">
