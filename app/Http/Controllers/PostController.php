@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\StorePostRequest;
 use Illuminate\Support\Facades\Storage;
@@ -18,15 +19,20 @@ class PostController extends Controller
     public function index()
     {
         // Enable query logging
-        DB::enableQueryLog();
+      //  DB::enableQueryLog();
 
         // Retrieve all posts and users (though users are not used in the view)
 
-        $posts = Cache::remember('posts', now()->addSeconds(15), function () {
-            return Post::all();
-        });
+        // $posts = Cache::remember('posts', now()->addSeconds(40), function () {
+        //     Log::info('Retrieving posts from database' , ['time' => now()]);
+        //     return Post::all();
+        // });
 
-       // $posts = Post::all();
+        //$posts = Post::onlyTrashed()->get();
+      //  $posts = Post::whereNotNull('deleted_at')->get();
+        //$posts = DB::table('posts')->whereNotNull('deleted_at')->get();
+       // dd($posts);
+       $posts =  Post::all();
         $users = User::all();
         $query = DB::getQueryLog();
 
@@ -129,7 +135,19 @@ class PostController extends Controller
     {
         // Find and delete the post
         $post = Post::findOrFail($id);
-        $post->delete();
+       $post->delete();
+
+       // $post->ForceDelete();
+
+        return redirect('/posts');
+    }
+
+    public function ForceDelete(string $id)
+    {
+        // Find and delete the post
+        $post = Post::withTrashed()->findOrFail($id);
+      //  dd($post);
+        $post->ForceDelete();
 
         return redirect('/posts');
     }

@@ -19,7 +19,7 @@ class PostsTableSeeder extends Seeder
         $posts =  Post::factory(5)->create();
 
 
-        Comment::factory(5)->make()->each(function ($comment) use ($posts) {
+        Comment::factory(23)->make()->each(function ($comment) use ($posts) {
             $comment->post_id = $posts->random()->id;
             $comment->save();
         });

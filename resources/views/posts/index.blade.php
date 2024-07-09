@@ -17,6 +17,7 @@
             <table class="table table-striped table-bordered">
                 <thead class="thead-dark">
                     <tr>
+                        <th scope="col">#</th>
                         <th scope="col">Title</th>
                         <th scope="col">Content</th>
                         <th scope="col">Image</th>
@@ -27,6 +28,7 @@
                 <tbody>
                     @foreach($posts as $post)
                     <tr>
+                        <td>{{ $post->id }}</td>
                         <td><a href="{{ route('posts.show', ['post' => $post->id]) }}">{{ $post->title }}</a></td>
                         <td>{{ $post->content }}</td>
                         <td>
@@ -38,6 +40,12 @@
                         <td>
                             <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-primary btn-sm">Edit</a>
                             <form method="POST" action="{{ route('posts.destroy', ['post' => $post->id]) }}" style="display:inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-warning btn-sm">Archive</button>
+                            </form>
+
+                            <form method="POST" action="{{ route('posts.force', ['id' => $post->id]) }}" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>

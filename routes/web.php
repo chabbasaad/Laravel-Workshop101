@@ -75,4 +75,5 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 
 
 Route::resource('posts', PostController::class);
+Route::delete('/posts/{id}/force', [PostController::class, 'ForceDelete'])->name('posts.force');
 
