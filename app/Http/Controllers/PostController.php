@@ -6,8 +6,9 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\StorePostRequest;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -20,7 +21,12 @@ class PostController extends Controller
         DB::enableQueryLog();
 
         // Retrieve all posts and users (though users are not used in the view)
-        $posts = Post::all();
+
+        $posts = Cache::remember('posts', now()->addSeconds(15), function () {
+            return Post::all();
+        });
+
+       // $posts = Post::all();
         $users = User::all();
         $query = DB::getQueryLog();
 
