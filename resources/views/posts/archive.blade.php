@@ -44,18 +44,29 @@
                         </td>
                         <td>{{ count($post->comments) }}</td>
                         <td>
+                            @if(\Request::route()->getName() == 'posts.archive')
+                            <div class="container">
+                                <div class="row"> <form method="POST" action="{{ route('posts.restore', ['id' => $post->id]) }}" style="display:inline-block;">
+                                    @csrf
+
+                                    <button type="submit" class="btn btn-info btn-sm">Restore</button>
+                                </form></div>
+                            </div>
+                            @else
                             <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-primary btn-sm">Edit</a>
                             <form method="POST" action="{{ route('posts.destroy', ['post' => $post->id]) }}" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-warning btn-sm">Archive</button>
                             </form>
-
                             <form method="POST" action="{{ route('posts.force', ['id' => $post->id]) }}" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
+                            @endif
+
+
                         </td>
                     </tr>
                     @endforeach

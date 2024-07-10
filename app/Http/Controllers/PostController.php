@@ -41,6 +41,31 @@ class PostController extends Controller
         ]);
     }
 
+    public function archive()
+    {
+
+        // Retrieve all posts and users (though users are not used in the view)
+        $posts = Post::onlyTrashed()->get();
+       // $users = User::all();
+
+        return view('posts.archive', [
+            'posts' => $posts
+        ]);
+    }
+
+    public function restore(string $id)
+    {
+        // Find the post by ID
+        $post = Post::withTrashed()->findOrFail($id);
+
+        // Restore the post
+        $post->restore();
+
+        return redirect('/posts');
+    }
+
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -79,6 +104,7 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
+
         // Find the post by ID or fail
         $post = Post::findOrFail($id);
 
@@ -105,6 +131,8 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
+        dd($request->all());
         // Find the post by ID
         $post = Post::findOrFail($id);
 

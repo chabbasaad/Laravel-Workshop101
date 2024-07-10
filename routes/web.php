@@ -59,13 +59,13 @@ use App\Http\Controllers\PostController;
 //     ]);
 // });
 
-// route::get('/posts',[PostController::class,'index'])->name('index');
-// Route::post('/posts',[PostController::class,'store'])->name('store');
-// route::get('/posts/create',[PostController::class,'create'])->name('create');
-// Route::delete('/posts/{id}',[PostController::class,'destroy']);
-// Route::get('/posts/{id}',[PostController::class,'show'])->name('show');
-// Route::get('/posts/{id}/edit',[PostController::class,'edit'])->name('edit');
-// Route::put('/posts/{id}',[PostController::class,'update'])->name('update');
+// Route::get('/posts',[PostController::class,'index'])->name('posts.index');
+// Route::post('/posts',[PostController::class,'store'])->name('posts.store');
+// route::get('/posts/create',[PostController::class,'create'])->name('posts.create');
+// Route::delete('/posts/{id}',[PostController::class,'destroy'])->name('posts.destroy');
+// Route::get('/posts/{id}',[PostController::class,'show'])->name('posts.show');
+// Route::get('/posts/{id}/edit',[PostController::class,'edit'])->name('posts.edit');
+// Route::put('/posts/{id}',[PostController::class,'update'])->name('posts.update');
 
 
 
@@ -76,4 +76,5 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 
 Route::resource('posts', PostController::class);
 Route::delete('/posts/{id}/force', [PostController::class, 'ForceDelete'])->name('posts.force');
-
+Route::get('/postsarchive', [PostController::class, 'archive'])->name('posts.archive');
+Route::post('/posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
