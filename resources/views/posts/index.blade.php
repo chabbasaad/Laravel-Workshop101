@@ -36,7 +36,7 @@
                         <td>{{ $post->id }}</td>
 
                         <td><a href="{{ route('posts.show', ['post' => $post->id]) }}">{{ $post->title }}</a></td>
-                        <td>{{ $post->content }}</td>
+                        <td>{!! \Illuminate\Support\Str::markdown($post->content) !!}</td>
                         <td>
                             @if($post->image_post)
                             <img src="{{ Storage::url($post->image_post) }}" alt="Post Image" class="img-fluid" style="max-width: 100px;">
