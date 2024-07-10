@@ -1,6 +1,6 @@
 <div class="container mt-5">
     <!-- He who is contented is rich. - Laozi -->
-    <form method="POST" action="{{ $action }}" enctype="multipart/form-data" class="shadow p-4 rounded bg-light">
+    <form method="POST" action="{{ $action }}" id="sendForm" enctype="multipart/form-data" class="shadow p-4 rounded bg-light">
         @csrf
 
         @if($method !== 'POST')
@@ -13,9 +13,16 @@
         </div>
 
         <div class="form-group">
-            <label for="content" class="font-weight-bold">Content</label>
+            <div class="flex flex-col space-y-2">
+                <label for="editor" class="text-gray-600 font-semibold">Content</label>
+                <input type="hidden" name="content" id="content" value="{{ old('content', $post->content ?? '') }}">
+                <div id="editor"   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"><div>
+            </div>
+
+
+            {{-- <label for="content" class="font-weight-bold">Content</label>
             <textarea name="content" placeholder="Content" class="form-control" rows="5">{{ old('content', $post->content ?? '') }}</textarea>
-        </div>
+       --}} </div>
 
         <div class="form-group">
             <label for="thumbnail" class="font-weight-bold">Thumbnail</label>
@@ -36,7 +43,7 @@
             </div>
         @endif
 
-        <button type="submit" class="btn btn-primary btn-block">
+        <button type="submit"  class="btn btn-primary btn-block">
             {{ $method === 'POST' ? 'Create Post' : 'Update Post' }}
         </button>
     </form>
