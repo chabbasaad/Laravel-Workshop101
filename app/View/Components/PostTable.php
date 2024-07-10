@@ -6,20 +6,18 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class date extends Component
+class PostTable extends Component
 {
-
-    public $date;
+    public $type;
+    public $posts;
     /**
      * Create a new component instance.
      */
-    public function __construct($date)
+    public function __construct($type, $posts )
     {
-
-
-        $this->date = \Carbon\Carbon::parse($date)->diffForHumans();
-
-
+        //
+        $this->type = $type;
+        $this->posts = $posts;
     }
 
     /**
@@ -27,6 +25,6 @@ class date extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.date');
+        return view('components.post-table');
     }
 }

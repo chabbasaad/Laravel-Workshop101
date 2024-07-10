@@ -61,6 +61,8 @@ class PostController extends Controller
         // Restore the post
         $post->restore();
 
+        
+
         return redirect('/posts');
     }
 

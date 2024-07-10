@@ -1,3 +1,3 @@
 <div class="text-muted">
-   {{$date}}
+   {{ $date }}
 </div>
