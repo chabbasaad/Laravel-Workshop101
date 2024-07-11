@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 
 // Route::get('/', function () {
 //     return view('home');
@@ -78,3 +79,7 @@ Route::resource('posts', PostController::class);
 Route::delete('/posts/{id}/force', [PostController::class, 'ForceDelete'])->name('posts.force');
 Route::get('/postsarchive', [PostController::class, 'archive'])->name('posts.archive');
 Route::post('/posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
+
+Route::post('comment/{post}', [CommentController::class, 'store'])->name('comments.store');
+Route::patch('posts/{post}/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+Route::delete('posts/{post}/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');

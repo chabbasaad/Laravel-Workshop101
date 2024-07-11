@@ -35,13 +35,29 @@
                             <td>{{ $post->id }}</td>
 
                             <td><a href="{{ route('posts.show', ['post' => $post->id]) }}">{{ $post->title }}</a></td>
-                            <td>{{ $post->content }}</td>
+                            <td>{!! \Illuminate\Support\Str::markdown($post->content) !!}</td>
                             <td>
                                 @if($post->image_post)
                                 <img src="{{ Storage::url($post->image_post) }}" alt="Post Image" class="img-fluid" style="max-width: 100px;">
                                 @endif
                             </td>
-                            <td>{{ count($post->comments) }}</td>
+                            <td>
+                                <button class="btn btn-success" data-toggle="modal" data-target="#createCommentModal">Add Comment</button>
+                                {{ count($post->comments) }}
+
+                                @foreach($post->comments as $comment)
+                                <div class="comment">
+                                    <p>{{ $comment->comment }}</p>
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCommentModal" data-comment="{{ $comment }}">Edit</button>
+                                    <form method="POST" action="{{ route('comments.destroy', ['post' => $post->id, 'comment' => $comment->id]) }}" style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </div>
+                            @endforeach
+
+                            </td>
                             <td>
                                 @if(\Request::route()->getName() == 'posts.archive')
                                 <div class="container">
@@ -96,3 +112,72 @@
 
   <p> this is a table : {{$type}} </p>
 </div>
+
+
+
+<!-- Create Comment Modal -->
+<div class="modal fade" id="createCommentModal" tabindex="-1" role="dialog" aria-labelledby="createCommentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createCommentModalLabel">Add Comment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ route('comments.store', $post->id) }}">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="comment">Comment</label>
+                        <textarea class="form-control" id="comment" name="comment" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Comment Modal -->
+<div class="modal fade" id="editCommentModal" tabindex="-1" role="dialog" aria-labelledby="editCommentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCommentModalLabel">Edit Comment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editCommentForm" method="POST" action="">
+                @csrf
+                @method('PATCH')
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editContent">Comment</label>
+                        <textarea class="form-control" id="editContent" name="content" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    $('#editCommentModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var comment = button.data('comment');
+
+        var modal = $(this);
+        modal.find('#editContent').val(comment.content);
+        modal.find('#editCommentForm').attr('action', `/posts/${comment.post_id}/comments/${comment.id}`);
+    });
+</script>
